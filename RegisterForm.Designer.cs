@@ -99,7 +99,7 @@ namespace Ingatlan
             // 
             // loginButton
             // 
-            this.loginButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.loginButton.DialogResult = System.Windows.Forms.DialogResult.Abort;
             this.loginButton.Location = new System.Drawing.Point(164, 372);
             this.loginButton.Name = "loginButton";
             this.loginButton.Size = new System.Drawing.Size(100, 23);

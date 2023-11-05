@@ -19,7 +19,7 @@ namespace Ingatlan
 
         private void LoginForm_Load(object sender, EventArgs e)
         {
-            new DBConnection();
+            
         }
 
         private void registerButtom_Click(object sender, EventArgs e)
@@ -43,12 +43,30 @@ namespace Ingatlan
                 return;
             }
 
-            if (passwordField.Text.Length < 8 || false /*Database check*/)
+            UserInfo user = DBConnection.Instance.GetUserByAdojel(usernameField.Text);
+
+            if (passwordField.Text.Length < 8 || user == null || !PasswordUtility.Validate(passwordField.Text, user.passHash))
             {
                 feedbackLabel.Text = "Hibás adóazonosító jel vagy jelszó";
                 feedbackLabel.ForeColor = Color.Red;
                 return;
             }
+
+            Program.currentUser = user;
+            DBConnection.Instance.SetIsLoggedIn(user.adojel.ToString(), true);
+
+            ProfileForm prof = new ProfileForm();
+            this.Hide();
+            usernameField.Text = "";
+            passwordField.Text = "";
+
+            prof.Closed += (s, args) => {
+                this.Show();
+                prof.Dispose();
+            };
+            prof.ShowDialog(this);
         }
+
+        
     }
 }

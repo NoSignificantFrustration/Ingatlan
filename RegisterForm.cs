@@ -50,13 +50,6 @@ namespace Ingatlan
                 usernameFeedbackLabel.ForeColor = Color.Red;
                 success = false;
             }
-            //Adatbázis check
-            else if (false)
-            {
-                usernameFeedbackLabel.Text = "Ezzel az adóazonosító jellel már létezik fiók";
-                usernameFeedbackLabel.ForeColor = Color.Red;
-                success = false;
-            }
 
             passwordFeedbackLabel.ForeColor = Color.Red;
 
@@ -76,19 +69,39 @@ namespace Ingatlan
                 passwordConfirmFeedbackLabel.Text = "A két jelszó nem egyezik";
                 success = false;
             }
+
+            string password = passwordField.Text;
             passwordField.Text = "";
             passwordVerifyField.Text = "";
 
             if (success)
             {
+                
+
+                DBConnection.RegisterResult registerResult = DBConnection.Instance.Register(usernameField.Text, password);
+
                 usernameFeedbackLabel.Text = "";
                 usernameField.Text = "";
                 passwordFeedbackLabel.Text = "";
-                
-                
 
-                passwordConfirmFeedbackLabel.ForeColor = Color.Green;
-                passwordConfirmFeedbackLabel.Text = "Sikeres regisztráció";
+                switch (registerResult)
+                {
+                    case DBConnection.RegisterResult.AdojelAlreadyTaken:
+                        passwordConfirmFeedbackLabel.ForeColor = Color.Red;
+                        usernameFeedbackLabel.Text = "Ezzel az adójellel már létezik fiók";
+                        break;
+                    case DBConnection.RegisterResult.Success:
+                        passwordConfirmFeedbackLabel.ForeColor = Color.Green;
+                        passwordConfirmFeedbackLabel.Text = "Sikeres regisztráció";
+                        break;
+                    case DBConnection.RegisterResult.Fail:
+                        passwordConfirmFeedbackLabel.ForeColor = Color.Red;
+                        usernameField.Text = "Hiba a regisztráció közben";
+                        break;
+                }
+
+
+                
             }
             
         }
