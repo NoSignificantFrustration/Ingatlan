@@ -72,5 +72,27 @@ namespace Ingatlan
             }
             mothersNameField.Text = Program.currentUser.mothersName;
         }
+
+        private void addPlotToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AddPlotForm addPlotForm = new AddPlotForm();
+            this.Hide();
+            addPlotForm.Closed += (s, args) => {
+                this.Show();
+                addPlotForm.Dispose();
+            };
+            addPlotForm.ShowDialog(this);
+        }
+
+        private void updatePlotToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UpdatePlotForm updatePlotForm = new UpdatePlotForm();
+            this.Hide();
+            updatePlotForm.Closed += (s, args) => {
+                this.Show();
+                updatePlotForm.Dispose();
+            };
+            updatePlotForm.ShowDialog(this);
+        }
     }
 }

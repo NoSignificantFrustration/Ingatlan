@@ -105,6 +105,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddPlotForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddPlotForm.Designer.cs">
+      <DependentUpon>AddPlotForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="DBConnection.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -112,7 +118,9 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="OwnerInfo.cs" />
     <Compile Include="PasswordUtility.cs" />
+    <Compile Include="PlotInfo.cs" />
     <Compile Include="ProfileForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -127,6 +135,12 @@
     <Compile Include="RegisterForm.Designer.cs">
       <DependentUpon>RegisterForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UpdatePlotForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UpdatePlotForm.Designer.cs">
+      <DependentUpon>UpdatePlotForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UpdateUserDataForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -134,6 +148,9 @@
       <DependentUpon>UpdateUserDataForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UserInfo.cs" />
+    <EmbeddedResource Include="AddPlotForm.resx">
+      <DependentUpon>AddPlotForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -151,6 +168,9 @@
     </Compile>
     <EmbeddedResource Include="RegisterForm.resx">
       <DependentUpon>RegisterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UpdatePlotForm.resx">
+      <DependentUpon>UpdatePlotForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UpdateUserDataForm.resx">
       <DependentUpon>UpdateUserDataForm.cs</DependentUpon>

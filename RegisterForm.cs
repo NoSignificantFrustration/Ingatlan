@@ -78,7 +78,7 @@ namespace Ingatlan
             {
                 
 
-                DBConnection.RegisterResult registerResult = DBConnection.Instance.Register(usernameField.Text, password);
+                DBConnection.InsertResult registerResult = DBConnection.Instance.Register(usernameField.Text, password);
 
                 usernameFeedbackLabel.Text = "";
                 usernameField.Text = "";
@@ -86,15 +86,15 @@ namespace Ingatlan
 
                 switch (registerResult)
                 {
-                    case DBConnection.RegisterResult.AdojelAlreadyTaken:
+                    case DBConnection.InsertResult.AlreadyExists:
                         passwordConfirmFeedbackLabel.ForeColor = Color.Red;
                         usernameFeedbackLabel.Text = "Ezzel az adójellel már létezik fiók";
                         break;
-                    case DBConnection.RegisterResult.Success:
+                    case DBConnection.InsertResult.Success:
                         passwordConfirmFeedbackLabel.ForeColor = Color.Green;
                         passwordConfirmFeedbackLabel.Text = "Sikeres regisztráció";
                         break;
-                    case DBConnection.RegisterResult.Fail:
+                    case DBConnection.InsertResult.Fail:
                         passwordConfirmFeedbackLabel.ForeColor = Color.Red;
                         usernameField.Text = "Hiba a regisztráció közben";
                         break;

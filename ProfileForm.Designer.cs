@@ -35,8 +35,8 @@ namespace Ingatlan
             this.updateUserDataOption = new System.Windows.Forms.ToolStripMenuItem();
             this.adminToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.telkekToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.telekFelvételeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.telekKezeléseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addPlotToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.updatePlotToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ingatlanokToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ingatlanFelvételeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ingatlanKezeléseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -94,23 +94,25 @@ namespace Ingatlan
             // telkekToolStripMenuItem
             // 
             this.telkekToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.telekFelvételeToolStripMenuItem,
-            this.telekKezeléseToolStripMenuItem});
+            this.addPlotToolStripMenuItem,
+            this.updatePlotToolStripMenuItem});
             this.telkekToolStripMenuItem.Name = "telkekToolStripMenuItem";
             this.telkekToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.telkekToolStripMenuItem.Text = "Telkek";
             // 
-            // telekFelvételeToolStripMenuItem
+            // addPlotToolStripMenuItem
             // 
-            this.telekFelvételeToolStripMenuItem.Name = "telekFelvételeToolStripMenuItem";
-            this.telekFelvételeToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
-            this.telekFelvételeToolStripMenuItem.Text = "Telek felvétele";
+            this.addPlotToolStripMenuItem.Name = "addPlotToolStripMenuItem";
+            this.addPlotToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addPlotToolStripMenuItem.Text = "Telek felvétele";
+            this.addPlotToolStripMenuItem.Click += new System.EventHandler(this.addPlotToolStripMenuItem_Click);
             // 
-            // telekKezeléseToolStripMenuItem
+            // updatePlotToolStripMenuItem
             // 
-            this.telekKezeléseToolStripMenuItem.Name = "telekKezeléseToolStripMenuItem";
-            this.telekKezeléseToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
-            this.telekKezeléseToolStripMenuItem.Text = "Telek kezelése";
+            this.updatePlotToolStripMenuItem.Name = "updatePlotToolStripMenuItem";
+            this.updatePlotToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.updatePlotToolStripMenuItem.Text = "Telek kezelése";
+            this.updatePlotToolStripMenuItem.Click += new System.EventHandler(this.updatePlotToolStripMenuItem_Click);
             // 
             // ingatlanokToolStripMenuItem
             // 
@@ -276,8 +278,8 @@ namespace Ingatlan
         private System.Windows.Forms.TextBox mothersNameField;
         private System.Windows.Forms.ToolStripMenuItem adminToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem telkekToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem telekFelvételeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem telekKezeléseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addPlotToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem updatePlotToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ingatlanokToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ingatlanFelvételeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ingatlanKezeléseToolStripMenuItem;

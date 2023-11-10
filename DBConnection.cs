@@ -1,5 +1,6 @@
 ﻿using MySqlConnector;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Forms;
 
@@ -67,11 +68,11 @@ namespace Ingatlan
         }
 
 
-        public RegisterResult Register(string adojel, string passwd)
+        public InsertResult Register(string adojel, string passwd)
         {
             if (GetUserByAdojel(adojel) != null)
             {
-                return RegisterResult.AdojelAlreadyTaken;
+                return InsertResult.AlreadyExists;
             }
 
             string passHash = PasswordUtility.GetHash(passwd);
@@ -87,12 +88,12 @@ namespace Ingatlan
                 if (command.ExecuteNonQuery() < 0)
                 {
                     Console.WriteLine("Error");
-                    return RegisterResult.Fail;
+                    return InsertResult.Fail;
                 }
 
             }
 
-            return RegisterResult.Success;
+            return InsertResult.Success;
         }
 
         public void SetIsLoggedIn(string adojel, bool value)
@@ -160,9 +161,285 @@ namespace Ingatlan
             }
         }
 
-        public enum RegisterResult
+        public void GetPlotTypes(out Dictionary<string, int> dict)
         {
-            AdojelAlreadyTaken = 0, Success = 1, Fail = 2
+            dict = new Dictionary<string, int>();
+
+            string commandString = "SELECT * FROM `telek jellegek`";
+
+
+            using (MySqlConnection conn = GetConnection())
+            {
+                MySqlCommand command = new MySqlCommand(commandString, conn);
+                MySqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    dict.Add(reader.GetString(1), reader.GetInt32(0));
+                }
+
+            }
+        }
+
+        public PlotInfo GetPlotByParcelNumber(string parcelNumber)
+        {
+
+            string commandString = "SELECT * FROM `telkek` WHERE `helyrajzi szam` = ?parcelNumber";
+
+
+            using (MySqlConnection conn = GetConnection())
+            {
+                MySqlCommand command = new MySqlCommand(commandString, conn);
+                command.Parameters.AddWithValue("?parcelNumber", parcelNumber);
+                MySqlDataReader reader = command.ExecuteReader();
+
+                if (!reader.HasRows)
+                {
+                    return null;
+                }
+
+                reader.Read();
+
+                return new PlotInfo(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2), reader.GetString(3), reader.GetString(4), reader.GetUInt64(5), reader.GetUInt64(6));
+
+            }
+        }
+
+        public InsertResult AddPlot(PlotInfo plot)
+        {
+            if (GetPlotByParcelNumber(plot.parcelNumber.ToString()) != null)
+            {
+                return InsertResult.AlreadyExists;
+            }
+
+
+            string commandString = "INSERT INTO `telkek` (`helyrajzi szam`, `jelleg`, `iranyitoszam`, `kozterulet`, `telepules`, `meret`, `becsult ertek`)" +
+                " VALUES (?parcelNumber, ?plotType, ?zipCode, ?publicSpace, ?cityName, ?size, ?value)";
+
+
+            using (MySqlConnection conn = GetConnection())
+            {
+                MySqlCommand command = new MySqlCommand(commandString, conn);
+                command.Parameters.AddWithValue("?parcelNumber", plot.parcelNumber);
+                command.Parameters.AddWithValue("?plotType", plot.plotType);
+                command.Parameters.AddWithValue("?zipCode", plot.zipCode.ToString());
+                command.Parameters.AddWithValue("?publicSpace", plot.publicSpace);
+                command.Parameters.AddWithValue("?cityName", plot.city);
+                command.Parameters.AddWithValue("?size", plot.size.ToString());
+                command.Parameters.AddWithValue("?value", plot.value.ToString());
+
+                if (command.ExecuteNonQuery() < 0)
+                {
+                    Console.WriteLine("Error");
+                    return InsertResult.Fail;
+                }
+
+            }
+
+            return InsertResult.Success;
+        }
+
+        public List<PlotInfo> GetPlots()
+        {
+            string commandString = "SELECT * FROM `telkek`";
+
+
+            using (MySqlConnection conn = GetConnection())
+            {
+                MySqlCommand command = new MySqlCommand(commandString, conn);
+                //command.Parameters.AddWithValue("?parcelNumber", parcelNumber);
+                MySqlDataReader reader = command.ExecuteReader();
+
+                if (!reader.HasRows)
+                {
+                    return null;
+                }
+
+                List<PlotInfo> plots = new List<PlotInfo>();
+
+
+                while (reader.Read())
+                {
+                    plots.Add(new PlotInfo(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2), reader.GetString(3), reader.GetString(4), reader.GetUInt64(5), reader.GetUInt64(6))); ;
+                }
+                
+
+                return plots;
+
+            }
+        }
+
+        public List<UserInfo> GetUsers()
+        {
+            string commandString = "SELECT * FROM `felhasznalok`";
+
+
+            using (MySqlConnection conn = GetConnection())
+            {
+                MySqlCommand command = new MySqlCommand(commandString, conn);
+                //command.Parameters.AddWithValue("?parcelNumber", parcelNumber);
+                MySqlDataReader reader = command.ExecuteReader();
+
+                if (!reader.HasRows)
+                {
+                    return null;
+                }
+
+                List<UserInfo> users = new List<UserInfo>();
+
+
+                while (reader.Read())
+                {
+                    users.Add(new UserInfo(reader.GetInt64(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetInt64(4), reader.GetDateTime(5), reader.GetString(6), reader.GetInt32(9)));
+                }
+
+
+                return users;
+
+            }
+        }
+
+        public OwnerInfo GetPlotOwnerInfo(string propertyID, string ownerID)
+        {
+            string commandString = "SELECT * FROM `telek tulajdonosok` WHERE `helyrajzi szam` = ?parcelNumber AND `tulajdonos adojel` = ?ownerID";
+
+
+            using (MySqlConnection conn = GetConnection())
+            {
+                MySqlCommand command = new MySqlCommand(commandString, conn);
+                command.Parameters.AddWithValue("?parcelNumber", propertyID);
+                command.Parameters.AddWithValue("?ownerID", ownerID);
+                MySqlDataReader reader = command.ExecuteReader();
+
+                if (!reader.HasRows)
+                {
+                    return null;
+                }
+                reader.Read();
+
+                return new OwnerInfo(reader.GetInt32(0), reader.GetInt64(1), reader.GetDateTime(2), reader.GetInt32(3));
+
+            }
+        }
+
+        public InsertResult AddPlotOwner(OwnerInfo ownerInfo)
+        {
+            if (GetPlotOwnerInfo(ownerInfo.PropertyID.ToString(), ownerInfo.ownerID.ToString()) != null)
+            {
+                return InsertResult.AlreadyExists;
+            }
+
+
+            string commandString = "INSERT INTO `telek tulajdonosok` VALUES (?parcelNumber, ?ownerID, ?ownerSince, ?ownerPercentage)";
+
+
+            using (MySqlConnection conn = GetConnection())
+            {
+                MySqlCommand command = new MySqlCommand(commandString, conn);
+                command.Parameters.AddWithValue("?parcelNumber", ownerInfo.PropertyID);
+                command.Parameters.AddWithValue("?ownerID", ownerInfo.ownerID);
+                command.Parameters.AddWithValue("?ownerSince", ownerInfo.ownerSince.ToString("yyyy-MM-dd"));
+                command.Parameters.AddWithValue("?ownerPercentage", ownerInfo.ownerPercentage);
+
+                if (command.ExecuteNonQuery() < 0)
+                {
+                    return InsertResult.Fail;
+                }
+
+                return InsertResult.Success;
+
+            }
+        }
+
+        public List<OwnerInfo> GetPlotOwners(string parcelNumber)
+        {
+            string commandString = "SELECT * FROM `telek tulajdonosok` WHERE `helyrajzi szam` = ?parcelNumber";
+
+
+            using (MySqlConnection conn = GetConnection())
+            {
+                MySqlCommand command = new MySqlCommand(commandString, conn);
+                command.Parameters.AddWithValue("?parcelNumber", parcelNumber);
+                MySqlDataReader reader = command.ExecuteReader();
+
+                List<OwnerInfo> owners = new List<OwnerInfo>();
+                while (reader.Read())
+                {
+                    owners.Add(new OwnerInfo(reader.GetInt32(0), reader.GetInt64(1), reader.GetDateTime(2), reader.GetInt32(3)));
+                }
+
+                return owners;
+            }
+        }
+
+        public void UpdatePlot(PlotInfo plot)
+        {
+            string commandString = "UPDATE `telkek` SET `jelleg` = ?plotType, `iranyitoszam` = ?zipCode, `kozterulet` = ?publicSpace, `telepules` = ?cityName, `meret` = ?size, `becsult ertek` = ?value WHERE `helyrajzi szam` = ?parcelNumber";
+
+
+            using (MySqlConnection conn = GetConnection())
+            {
+                MySqlCommand command = new MySqlCommand(commandString, conn);
+                command.Parameters.AddWithValue("?parcelNumber", plot.parcelNumber);
+                command.Parameters.AddWithValue("?plotType", plot.plotType);
+                command.Parameters.AddWithValue("?zipCode", plot.zipCode.ToString());
+                command.Parameters.AddWithValue("?publicSpace", plot.publicSpace);
+                command.Parameters.AddWithValue("?cityName", plot.city);
+                command.Parameters.AddWithValue("?size", plot.size.ToString());
+                command.Parameters.AddWithValue("?value", plot.value.ToString());
+
+                if (command.ExecuteNonQuery() < 0)
+                {
+                    Console.WriteLine("Error");
+                }
+
+            }
+        }
+
+        public void UpdatePlotOwner(OwnerInfo ownerInfo)
+        {
+            string commandString = "UPDATE `telek tulajdonosok` SET `tulajdonhanyad` = ?ownerPercentage";
+
+
+            using (MySqlConnection conn = GetConnection())
+            {
+                MySqlCommand command = new MySqlCommand(commandString, conn);
+                command.Parameters.AddWithValue("?ownerPercentage", ownerInfo.ownerPercentage);
+
+
+                if (command.ExecuteNonQuery() < 0)
+                {
+                    Console.WriteLine("Error");
+                }
+
+            }
+        }
+
+        public void RemovePlotOwner(OwnerInfo ownerInfo)
+        {
+            string commandString = "DELETE FROM `telek tulajdonosok` WHERE `helyrajzi szam` = ?parcelNumber AND `tulajdonos adojel` = ?ownerID";
+
+
+            using (MySqlConnection conn = GetConnection())
+            {
+                MySqlCommand command = new MySqlCommand(commandString, conn);
+                command.Parameters.AddWithValue("?parcelNumber", ownerInfo.PropertyID);
+                command.Parameters.AddWithValue("?ownerID", ownerInfo.ownerID);
+
+
+                if (command.ExecuteNonQuery() < 0)
+                {
+                    Console.WriteLine("Error");
+                }
+
+            }
+        }
+
+        
+
+        public enum InsertResult
+        {
+            AlreadyExists = 0, Success = 1, Fail = 2
         }
 
 
