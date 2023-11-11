@@ -398,13 +398,15 @@ namespace Ingatlan
 
         public void UpdatePlotOwner(OwnerInfo ownerInfo)
         {
-            string commandString = "UPDATE `telek tulajdonosok` SET `tulajdonhanyad` = ?ownerPercentage";
+            string commandString = "UPDATE `telek tulajdonosok` SET `tulajdonhanyad` = ?ownerPercentage WHERE `helyrajzi szam` = ?parcelNumber AND `tulajdonos adojel` = ?ownerID";
 
 
             using (MySqlConnection conn = GetConnection())
             {
                 MySqlCommand command = new MySqlCommand(commandString, conn);
                 command.Parameters.AddWithValue("?ownerPercentage", ownerInfo.ownerPercentage);
+                command.Parameters.AddWithValue("?parcelNumber", ownerInfo.PropertyID);
+                command.Parameters.AddWithValue("?ownerID", ownerInfo.ownerID);
 
 
                 if (command.ExecuteNonQuery() < 0)
@@ -426,6 +428,56 @@ namespace Ingatlan
                 command.Parameters.AddWithValue("?parcelNumber", ownerInfo.PropertyID);
                 command.Parameters.AddWithValue("?ownerID", ownerInfo.ownerID);
 
+
+                if (command.ExecuteNonQuery() < 0)
+                {
+                    Console.WriteLine("Error");
+                }
+
+            }
+        }
+
+        public void DeletePlot(PlotInfo plotInfo)
+        {
+            string commandString = "DELETE FROM `telek tulajdonosok` WHERE `helyrajzi szam` = ?parcelNumber";
+
+
+            using (MySqlConnection conn = GetConnection())
+            {
+                MySqlCommand command = new MySqlCommand(commandString, conn);
+                command.Parameters.AddWithValue("?parcelNumber", plotInfo.parcelNumber);
+
+                if (command.ExecuteNonQuery() < 0)
+                {
+                    Console.WriteLine("Error");
+                }
+
+            }
+
+
+            commandString = "UPDATE `ingatlanok` SET `helyrajzi szam` = 0 WHERE `helyrajzi szam` = ?parcelNumber";
+
+
+            using (MySqlConnection conn = GetConnection())
+            {
+                MySqlCommand command = new MySqlCommand(commandString, conn);
+                command.Parameters.AddWithValue("?parcelNumber", plotInfo.parcelNumber);
+
+                if (command.ExecuteNonQuery() < 0)
+                {
+                    Console.WriteLine("Error");
+                }
+
+            }
+
+
+            commandString = "DELETE FROM `telkek` WHERE `helyrajzi szam` = ?parcelNumber";
+
+
+            using (MySqlConnection conn = GetConnection())
+            {
+                MySqlCommand command = new MySqlCommand(commandString, conn);
+                command.Parameters.AddWithValue("?parcelNumber", plotInfo.parcelNumber);
 
                 if (command.ExecuteNonQuery() < 0)
                 {
