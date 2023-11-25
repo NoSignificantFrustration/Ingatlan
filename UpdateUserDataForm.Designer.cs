@@ -206,7 +206,7 @@ namespace Ingatlan
             this.Controls.Add(this.addressField);
             this.Controls.Add(this.nameField);
             this.Name = "UpdateUserDataForm";
-            this.Text = "UpdateUserDataForm";
+            this.Text = "Adataim módosítása";
             this.Load += new System.EventHandler(this.UpdateUserDataForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

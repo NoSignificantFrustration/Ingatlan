@@ -51,6 +51,11 @@ namespace Ingatlan
 
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (MessageBox.Show("Bitosan ki akar jelentkezni?", "Kijelentkezés", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) != DialogResult.OK)
+            {
+                return;
+            }
+
             DBConnection.Instance.SetIsLoggedIn(Program.currentUser.adojel.ToString(), false);
             Program.currentUser = null;
             DialogResult = DialogResult.OK;
@@ -70,6 +75,7 @@ namespace Ingatlan
             {
                 mobileNumberField.Text = Program.currentUser.mobileNumber.ToString("D13");
             }
+            dateOfBirthField.Text = Program.currentUser.dateOfBirth.ToString("yyyy-MM-dd");
             mothersNameField.Text = Program.currentUser.mothersName;
         }
 
@@ -93,6 +99,50 @@ namespace Ingatlan
                 updatePlotForm.Dispose();
             };
             updatePlotForm.ShowDialog(this);
+        }
+
+        private void addBuildingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AddBuildingForm addBuildingForm = new AddBuildingForm();
+            this.Hide();
+            addBuildingForm.Closed += (s, args) => {
+                this.Show();
+                addBuildingForm.Dispose();
+            };
+            addBuildingForm.ShowDialog(this);
+        }
+
+        private void updateBuildingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UpdateBuildingForm updateBuildingForm = new UpdateBuildingForm();
+            this.Hide();
+            updateBuildingForm.Closed += (s, args) => {
+                this.Show();
+                updateBuildingForm.Dispose();
+            };
+            updateBuildingForm.ShowDialog(this);
+        }
+
+        private void viewMyPropertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ViewPropertiesForm viewPropertiesForm = new ViewPropertiesForm(Program.currentUser.adojel);
+            this.Hide();
+            viewPropertiesForm.Closed += (s, args) => {
+                this.Show();
+                viewPropertiesForm.Dispose();
+            };
+            viewPropertiesForm.ShowDialog(this);
+        }
+
+        private void overviewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OverviewForm overviewForm = new OverviewForm();
+            this.Hide();
+            overviewForm.Closed += (s, args) => {
+                this.Show();
+                overviewForm.Dispose();
+            };
+            overviewForm.ShowDialog(this);
         }
     }
 }

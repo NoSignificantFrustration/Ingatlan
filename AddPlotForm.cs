@@ -57,7 +57,6 @@ namespace Ingatlan
             ResetFeedbackLabels();
             parcelNumberField.Text = "";
             zipCodeField.Text = "";
-            publicSpaceField.Text = "";
             cityField.Text = "";
             sizeField.Text = "";
             valueField.Text = "";
@@ -95,12 +94,14 @@ namespace Ingatlan
 
             if (success)
             {
-                PlotInfo plot = new PlotInfo(parcelNumber, plotTypeDict[(string)typeDropdown.SelectedItem], zipCode, publicSpaceField.Text, cityField.Text, size, value);
+
+
+                PlotInfo plot = new PlotInfo(-1, parcelNumber, plotTypeDict[(string)typeDropdown.SelectedItem], zipCode, cityField.Text, size, value);
 
                 switch (DBConnection.Instance.AddPlot(plot))
                 {
                     case DBConnection.InsertResult.AlreadyExists:
-                        parcelNumberFeedbackLabel.Text = "Ezzel a helyrajzi számmal már létezik telek";
+                        parcelNumberFeedbackLabel.Text = "Ezzel a helyrajzi számmal és településsel már létezik telek";
                         return;
                     case DBConnection.InsertResult.Success:
                         ResetForm();

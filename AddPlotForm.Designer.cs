@@ -35,8 +35,6 @@ namespace Ingatlan
             this.typeLabel = new System.Windows.Forms.Label();
             this.zipCodeField = new System.Windows.Forms.TextBox();
             this.zipCodeLabel = new System.Windows.Forms.Label();
-            this.publicSpaceField = new System.Windows.Forms.TextBox();
-            this.publicSpaceLabel = new System.Windows.Forms.Label();
             this.cityField = new System.Windows.Forms.TextBox();
             this.cityLabel = new System.Windows.Forms.Label();
             this.sizeField = new System.Windows.Forms.TextBox();
@@ -105,23 +103,6 @@ namespace Ingatlan
             this.zipCodeLabel.TabIndex = 4;
             this.zipCodeLabel.Text = "Irányítószám";
             // 
-            // publicSpaceField
-            // 
-            this.publicSpaceField.Location = new System.Drawing.Point(44, 224);
-            this.publicSpaceField.MaxLength = 255;
-            this.publicSpaceField.Name = "publicSpaceField";
-            this.publicSpaceField.Size = new System.Drawing.Size(365, 20);
-            this.publicSpaceField.TabIndex = 7;
-            // 
-            // publicSpaceLabel
-            // 
-            this.publicSpaceLabel.AutoSize = true;
-            this.publicSpaceLabel.Location = new System.Drawing.Point(41, 208);
-            this.publicSpaceLabel.Name = "publicSpaceLabel";
-            this.publicSpaceLabel.Size = new System.Drawing.Size(54, 13);
-            this.publicSpaceLabel.TabIndex = 6;
-            this.publicSpaceLabel.Text = "Közterület";
-            // 
             // cityField
             // 
             this.cityField.Location = new System.Drawing.Point(44, 185);
@@ -141,7 +122,7 @@ namespace Ingatlan
             // 
             // sizeField
             // 
-            this.sizeField.Location = new System.Drawing.Point(44, 262);
+            this.sizeField.Location = new System.Drawing.Point(44, 230);
             this.sizeField.MaxLength = 18;
             this.sizeField.Name = "sizeField";
             this.sizeField.Size = new System.Drawing.Size(100, 20);
@@ -150,7 +131,7 @@ namespace Ingatlan
             // sizeLabel
             // 
             this.sizeLabel.AutoSize = true;
-            this.sizeLabel.Location = new System.Drawing.Point(41, 246);
+            this.sizeLabel.Location = new System.Drawing.Point(41, 214);
             this.sizeLabel.Name = "sizeLabel";
             this.sizeLabel.Size = new System.Drawing.Size(34, 13);
             this.sizeLabel.TabIndex = 10;
@@ -158,7 +139,7 @@ namespace Ingatlan
             // 
             // valueField
             // 
-            this.valueField.Location = new System.Drawing.Point(44, 320);
+            this.valueField.Location = new System.Drawing.Point(44, 288);
             this.valueField.MaxLength = 18;
             this.valueField.Name = "valueField";
             this.valueField.Size = new System.Drawing.Size(100, 20);
@@ -167,7 +148,7 @@ namespace Ingatlan
             // valueLabel
             // 
             this.valueLabel.AutoSize = true;
-            this.valueLabel.Location = new System.Drawing.Point(41, 304);
+            this.valueLabel.Location = new System.Drawing.Point(41, 272);
             this.valueLabel.Name = "valueLabel";
             this.valueLabel.Size = new System.Drawing.Size(69, 13);
             this.valueLabel.TabIndex = 12;
@@ -176,16 +157,16 @@ namespace Ingatlan
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(150, 265);
+            this.label2.Location = new System.Drawing.Point(150, 234);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(33, 13);
+            this.label2.Size = new System.Drawing.Size(27, 13);
             this.label2.TabIndex = 14;
-            this.label2.Text = "km^2";
+            this.label2.Text = "m^2";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(150, 323);
+            this.label3.Location = new System.Drawing.Point(150, 292);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(16, 13);
             this.label3.TabIndex = 15;
@@ -236,7 +217,7 @@ namespace Ingatlan
             // 
             this.sizeFeedbackLabel.AutoSize = true;
             this.sizeFeedbackLabel.ForeColor = System.Drawing.Color.Red;
-            this.sizeFeedbackLabel.Location = new System.Drawing.Point(41, 285);
+            this.sizeFeedbackLabel.Location = new System.Drawing.Point(41, 253);
             this.sizeFeedbackLabel.Name = "sizeFeedbackLabel";
             this.sizeFeedbackLabel.Size = new System.Drawing.Size(35, 13);
             this.sizeFeedbackLabel.TabIndex = 20;
@@ -246,7 +227,7 @@ namespace Ingatlan
             // 
             this.valueFeedbackLabel.AutoSize = true;
             this.valueFeedbackLabel.ForeColor = System.Drawing.Color.Red;
-            this.valueFeedbackLabel.Location = new System.Drawing.Point(41, 343);
+            this.valueFeedbackLabel.Location = new System.Drawing.Point(41, 311);
             this.valueFeedbackLabel.Name = "valueFeedbackLabel";
             this.valueFeedbackLabel.Size = new System.Drawing.Size(35, 13);
             this.valueFeedbackLabel.TabIndex = 21;
@@ -282,8 +263,6 @@ namespace Ingatlan
             this.Controls.Add(this.sizeLabel);
             this.Controls.Add(this.cityField);
             this.Controls.Add(this.cityLabel);
-            this.Controls.Add(this.publicSpaceField);
-            this.Controls.Add(this.publicSpaceLabel);
             this.Controls.Add(this.zipCodeField);
             this.Controls.Add(this.zipCodeLabel);
             this.Controls.Add(this.typeLabel);
@@ -306,8 +285,6 @@ namespace Ingatlan
         private System.Windows.Forms.Label typeLabel;
         private System.Windows.Forms.TextBox zipCodeField;
         private System.Windows.Forms.Label zipCodeLabel;
-        private System.Windows.Forms.TextBox publicSpaceField;
-        private System.Windows.Forms.Label publicSpaceLabel;
         private System.Windows.Forms.TextBox cityField;
         private System.Windows.Forms.Label cityLabel;
         private System.Windows.Forms.TextBox sizeField;

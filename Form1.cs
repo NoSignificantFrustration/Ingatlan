@@ -55,13 +55,19 @@ namespace Ingatlan
             Program.currentUser = user;
             DBConnection.Instance.SetIsLoggedIn(user.adojel.ToString(), true);
 
+            feedbackLabel.Text = "";
+
             ProfileForm prof = new ProfileForm();
             this.Hide();
             usernameField.Text = "";
             passwordField.Text = "";
 
             prof.Closed += (s, args) => {
-                this.Show();
+                if (!this.IsDisposed)
+                {
+                    this.Show();
+                }
+                
                 prof.Dispose();
             };
             prof.ShowDialog(this);

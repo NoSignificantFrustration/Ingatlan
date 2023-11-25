@@ -1,3 +1,3 @@
 db
-felhasználónév: ingatlan
+felhasználónév: ingatlanos
 jelszó: njlPePYhMa9zMeu

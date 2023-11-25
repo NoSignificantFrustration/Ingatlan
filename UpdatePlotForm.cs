@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Ingatlan
@@ -10,7 +11,7 @@ namespace Ingatlan
         private Dictionary<string, int> plotTypeDict;
         private Dictionary<int, string> plotTypeReverseDict;
 
-        Dictionary<int, ListViewItem> plotItems;
+        Dictionary<string, ListViewItem> plotItems;
         Dictionary<long, ListViewItem> userItems;
         Dictionary<long, ListViewItem> hiddenUserItems;
 
@@ -41,15 +42,16 @@ namespace Ingatlan
 
             ResetFeedbackLabels();
 
-            plotItems = new Dictionary<int, ListViewItem>();
+            plotItems = new Dictionary<string, ListViewItem>();
             List<PlotInfo> plots = DBConnection.Instance.GetPlots();
 
             foreach (PlotInfo item in plots)
             {
-                string title = $"[{item.parcelNumber}] - {item.publicSpace}";
+                
+                string title = $"[{item.parcelNumber}] - {item.city}";
                 ListViewItem listItem = plotListView.Items.Add(title);
                 listItem.Tag = item;
-                plotItems.Add(item.parcelNumber, listItem);
+                plotItems.Add(title.ToLower(), listItem);
             }
 
             userItems = new Dictionary<long, ListViewItem>();
@@ -85,6 +87,17 @@ namespace Ingatlan
 
         }
 
+        /*private string StringCapitalize(string s)
+        {
+            s = s.Trim();
+
+            if (s.Length == 0)
+            {
+                return s;
+            }
+            return char.ToUpper(s[0]) + s.ToLower().Substring(1, s.Length - 1);
+        }*/
+
         private void plotListView_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (plotListView.SelectedItems.Count != 1)
@@ -110,13 +123,12 @@ namespace Ingatlan
             typeDropdown.Text = plotTypeReverseDict[currentPlot.plotType];
             zipCodeField.Text = currentPlot.zipCode.ToString();
             cityField.Text = currentPlot.city;
-            publicSpaceField.Text = currentPlot.publicSpace;
             sizeField.Text = currentPlot.size.ToString();
             valueField.Text = currentPlot.value.ToString();
             
 
 
-            foreach (OwnerInfo item in DBConnection.Instance.GetPlotOwners(currentPlot.parcelNumber.ToString()))
+            foreach (OwnerInfo item in DBConnection.Instance.GetPlotOwners(currentPlot.id.ToString()))
             {
                 ListViewItem userItem = userItems[item.ownerID];
                 userListView.Items.Remove(userItem);
@@ -183,7 +195,7 @@ namespace Ingatlan
 
             if (!startingOwners.TryGetValue(userInfo.adojel, out OwnerInfo ownerInfo))
             {
-                ownerInfo = new OwnerInfo(currentPlot.parcelNumber, userInfo.adojel, DateTime.Now, 0);
+                ownerInfo = new OwnerInfo(currentPlot.id, userInfo.adojel, DateTime.Now, 0);
             }
 
 
@@ -196,6 +208,8 @@ namespace Ingatlan
             ownerItem.Tag = ownerInfo;
 
             ownerItems.Add(ownerInfo.ownerID, ownerItem);
+            ownerListView.SelectedItems.Clear();
+            ownerListView.SelectedIndices.Add(ownerListView.Items.Count - 1);
         }
 
         private void ResetFeedbackLabels()
@@ -205,7 +219,7 @@ namespace Ingatlan
             sizeFeedbackLabel.Text = "";
             valueFeedbackLabel.Text = "";
             successFeedbackLabel.Text = "";
-
+            cityFeedbackLabel.Text = "";
             parcelNumberFeedbackLabel.Text = "";
             adojelFeedbackLabel.Text = "";
             percentageFeedbackLabel.Text = "";
@@ -218,7 +232,6 @@ namespace Ingatlan
             typeDropdown.Text = "";
             zipCodeField.Text = "";
             cityField.Text = "";
-            publicSpaceField.Text = "";
             sizeField.Text = "";
             valueField.Text = "";
             
@@ -269,20 +282,73 @@ namespace Ingatlan
                 valueFeedbackLabel.Text = "Érvénytelen érték";
             }
 
+
+
             if (success)
             {
                 //currentPlot = new PlotInfo(parcelNumber, plotTypeDict[(string)typeDropdown.SelectedItem], zipCode, publicSpaceField.Text, cityField.Text, size, value);
-                currentPlot.plotType = plotTypeDict[(string)typeDropdown.SelectedItem];
-                currentPlot.zipCode = zipCode;
-                currentPlot.publicSpace = publicSpaceField.Text;
-                currentPlot.city = cityField.Text;
-                currentPlot.size = size;
-                currentPlot.value = value;
 
-                DBConnection.Instance.UpdatePlot(currentPlot);
-                UpdatePlotOwners();
+                PlotInfo modifiedPlot = new PlotInfo(currentPlot);
 
-                plotItems[currentPlot.parcelNumber].Text = $"[{currentPlot.parcelNumber}] - {currentPlot.publicSpace}"; ;
+
+                modifiedPlot.plotType = plotTypeDict[(string)typeDropdown.SelectedItem];
+                modifiedPlot.zipCode = zipCode;
+                modifiedPlot.city = cityField.Text;
+                modifiedPlot.size = size;
+                modifiedPlot.value = value;
+
+                DBConnection.InsertResult result = DBConnection.Instance.UpdatePlot(modifiedPlot);
+
+                switch (result)
+                {
+                    case DBConnection.InsertResult.AlreadyExists:
+                        if (currentPlot.city.ToLower() == modifiedPlot.city.ToLower())
+                        {
+                            goto case DBConnection.InsertResult.Success;
+                        }
+                        cityFeedbackLabel.Text = "Ebben a városban már létezik ezzel az helyrajzi számmal telek";
+                        break;
+                    case DBConnection.InsertResult.Success:
+
+
+                        UpdatePlotOwners();
+                        ResetPlotFields();
+                        ResetFeedbackLabels();
+                        ResetPlotOwnerLists();
+
+                        string title = $"[{currentPlot.parcelNumber}] - {currentPlot.city.ToLower()}";
+
+                        ListViewItem listViewItem = plotItems[title];
+                        plotItems.Remove(title);
+
+                        currentPlot.plotType = modifiedPlot.plotType;
+                        currentPlot.zipCode = modifiedPlot.zipCode;
+                        currentPlot.city = modifiedPlot.city;
+                        currentPlot.size = modifiedPlot.size;
+                        currentPlot.value = modifiedPlot.value;
+
+                        title = $"[{currentPlot.parcelNumber}] - {currentPlot.city}";
+                        listViewItem.Text = title;
+                        plotItems.Add(title.ToLower(), listViewItem);
+
+                        
+
+
+                        successFeedbackLabel.ForeColor = Color.Green;
+                        successFeedbackLabel.Text = "Telek sikeresen módosítva";
+                        
+
+                        
+                        break;
+                    case DBConnection.InsertResult.Fail:
+                        successFeedbackLabel.ForeColor = Color.Red;
+                        successFeedbackLabel.Text = "Hiba a telek módosítása közben";
+                        break;
+                    default:
+                        break;
+                }
+
+                
             }
 
 
@@ -329,11 +395,13 @@ namespace Ingatlan
         {
             if (int.TryParse(parcelNumberField.Text, out int parcelNumber))
             {
-                if (plotItems.TryGetValue(parcelNumber, out ListViewItem listItem))
+                
+                if (plotItems.TryGetValue($"[{parcelNumber}] - {citySearchField.Text.ToLower()}", out ListViewItem listItem))
                 {
 
                     SelectPlot((PlotInfo)listItem.Tag);
                     parcelNumberField.Text = "";
+                    citySearchField.Text = "";
                     parcelNumberFeedbackLabel.Text = "";
                 }
                 else
@@ -423,8 +491,17 @@ namespace Ingatlan
             {
                 return;
             }
+            int buildings = DBConnection.Instance.CountPlotBuildings(currentPlot.parcelNumber);
 
-            if (MessageBox.Show("Biztosan törli ezt a telket?", "Telek törlése", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) != DialogResult.OK)
+            if (buildings != 0)
+            {
+                if (MessageBox.Show($"Biztosan törli ezt a telket? A {buildings} rajta lévő ingatlan is törölve lesz!", "Telek törlése", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1) != DialogResult.OK)
+                {
+                    return;
+                }
+
+            }
+            else if (MessageBox.Show("Biztosan törli ezt a telket?", "Telek törlése", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) != DialogResult.OK)
             {
                 return;
             }
@@ -436,14 +513,18 @@ namespace Ingatlan
 
             DBConnection.Instance.DeletePlot(currentPlot);
 
-            ListViewItem plotListItem = plotItems[currentPlot.parcelNumber];
+            string title = $"[{currentPlot.parcelNumber}] - {currentPlot.city.ToLower()}";
+
+            ListViewItem plotListItem = plotItems[title];
 
             plotListView.Items.Remove(plotListItem);
-            plotItems.Remove(currentPlot.parcelNumber);
+            plotItems.Remove(title);
 
             currentPlot = null;
 
         }
+
+        
     }
 }
 

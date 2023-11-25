@@ -54,8 +54,6 @@ namespace Ingatlan
             this.sizeLabel = new System.Windows.Forms.Label();
             this.cityField = new System.Windows.Forms.TextBox();
             this.cityLabel = new System.Windows.Forms.Label();
-            this.publicSpaceField = new System.Windows.Forms.TextBox();
-            this.publicSpaceLabel = new System.Windows.Forms.Label();
             this.zipCodeField = new System.Windows.Forms.TextBox();
             this.zipCodeLabel = new System.Windows.Forms.Label();
             this.typeLabel = new System.Windows.Forms.Label();
@@ -70,6 +68,9 @@ namespace Ingatlan
             this.setOwnerPercentageButton = new System.Windows.Forms.Button();
             this.percentageFeedbackLabel = new System.Windows.Forms.Label();
             this.deleteButton = new System.Windows.Forms.Button();
+            this.citySearchField = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.cityFeedbackLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // plotListView
@@ -96,9 +97,9 @@ namespace Ingatlan
             // userListView
             // 
             this.userListView.HideSelection = false;
-            this.userListView.Location = new System.Drawing.Point(1065, 131);
+            this.userListView.Location = new System.Drawing.Point(981, 130);
             this.userListView.Name = "userListView";
-            this.userListView.Size = new System.Drawing.Size(170, 97);
+            this.userListView.Size = new System.Drawing.Size(247, 97);
             this.userListView.TabIndex = 2;
             this.userListView.UseCompatibleStateImageBehavior = false;
             this.userListView.View = System.Windows.Forms.View.List;
@@ -106,16 +107,16 @@ namespace Ingatlan
             // ownerListView
             // 
             this.ownerListView.HideSelection = false;
-            this.ownerListView.Location = new System.Drawing.Point(814, 131);
+            this.ownerListView.Location = new System.Drawing.Point(616, 131);
             this.ownerListView.Name = "ownerListView";
-            this.ownerListView.Size = new System.Drawing.Size(180, 97);
+            this.ownerListView.Size = new System.Drawing.Size(314, 97);
             this.ownerListView.TabIndex = 3;
             this.ownerListView.UseCompatibleStateImageBehavior = false;
             this.ownerListView.View = System.Windows.Forms.View.List;
             // 
             // addOwnerButton
             // 
-            this.addOwnerButton.Location = new System.Drawing.Point(1010, 152);
+            this.addOwnerButton.Location = new System.Drawing.Point(936, 146);
             this.addOwnerButton.Name = "addOwnerButton";
             this.addOwnerButton.Size = new System.Drawing.Size(39, 24);
             this.addOwnerButton.TabIndex = 4;
@@ -125,7 +126,7 @@ namespace Ingatlan
             // 
             // removeOwnerButton
             // 
-            this.removeOwnerButton.Location = new System.Drawing.Point(1010, 182);
+            this.removeOwnerButton.Location = new System.Drawing.Point(936, 176);
             this.removeOwnerButton.Name = "removeOwnerButton";
             this.removeOwnerButton.Size = new System.Drawing.Size(39, 24);
             this.removeOwnerButton.TabIndex = 5;
@@ -136,14 +137,15 @@ namespace Ingatlan
             // parcelNumberField
             // 
             this.parcelNumberField.Location = new System.Drawing.Point(56, 253);
+            this.parcelNumberField.MaxLength = 9;
             this.parcelNumberField.Name = "parcelNumberField";
-            this.parcelNumberField.Size = new System.Drawing.Size(100, 20);
+            this.parcelNumberField.Size = new System.Drawing.Size(75, 20);
             this.parcelNumberField.TabIndex = 6;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(53, 237);
+            this.label1.Location = new System.Drawing.Point(12, 237);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(125, 13);
             this.label1.TabIndex = 7;
@@ -159,7 +161,7 @@ namespace Ingatlan
             // 
             // parcelSearchButton
             // 
-            this.parcelSearchButton.Location = new System.Drawing.Point(162, 250);
+            this.parcelSearchButton.Location = new System.Drawing.Point(240, 250);
             this.parcelSearchButton.Name = "parcelSearchButton";
             this.parcelSearchButton.Size = new System.Drawing.Size(75, 23);
             this.parcelSearchButton.TabIndex = 9;
@@ -179,7 +181,7 @@ namespace Ingatlan
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(1062, 115);
+            this.label3.Location = new System.Drawing.Point(978, 114);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(84, 13);
             this.label3.TabIndex = 11;
@@ -187,7 +189,8 @@ namespace Ingatlan
             // 
             // adojelField
             // 
-            this.adojelField.Location = new System.Drawing.Point(1065, 253);
+            this.adojelField.Location = new System.Drawing.Point(981, 252);
+            this.adojelField.MaxLength = 10;
             this.adojelField.Name = "adojelField";
             this.adojelField.Size = new System.Drawing.Size(100, 20);
             this.adojelField.TabIndex = 12;
@@ -195,7 +198,7 @@ namespace Ingatlan
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(1062, 237);
+            this.label4.Location = new System.Drawing.Point(978, 236);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(88, 13);
             this.label4.TabIndex = 13;
@@ -203,7 +206,7 @@ namespace Ingatlan
             // 
             // adojelSearchButton
             // 
-            this.adojelSearchButton.Location = new System.Drawing.Point(1171, 250);
+            this.adojelSearchButton.Location = new System.Drawing.Point(1087, 249);
             this.adojelSearchButton.Name = "adojelSearchButton";
             this.adojelSearchButton.Size = new System.Drawing.Size(75, 23);
             this.adojelSearchButton.TabIndex = 14;
@@ -214,7 +217,7 @@ namespace Ingatlan
             // adojelFeedbackLabel
             // 
             this.adojelFeedbackLabel.AutoSize = true;
-            this.adojelFeedbackLabel.Location = new System.Drawing.Point(1062, 276);
+            this.adojelFeedbackLabel.Location = new System.Drawing.Point(978, 275);
             this.adojelFeedbackLabel.Name = "adojelFeedbackLabel";
             this.adojelFeedbackLabel.Size = new System.Drawing.Size(0, 13);
             this.adojelFeedbackLabel.TabIndex = 15;
@@ -223,7 +226,7 @@ namespace Ingatlan
             // 
             this.valueFeedbackLabel.AutoSize = true;
             this.valueFeedbackLabel.ForeColor = System.Drawing.Color.Red;
-            this.valueFeedbackLabel.Location = new System.Drawing.Point(356, 412);
+            this.valueFeedbackLabel.Location = new System.Drawing.Point(356, 391);
             this.valueFeedbackLabel.Name = "valueFeedbackLabel";
             this.valueFeedbackLabel.Size = new System.Drawing.Size(35, 13);
             this.valueFeedbackLabel.TabIndex = 36;
@@ -233,7 +236,7 @@ namespace Ingatlan
             // 
             this.sizeFeedbackLabel.AutoSize = true;
             this.sizeFeedbackLabel.ForeColor = System.Drawing.Color.Red;
-            this.sizeFeedbackLabel.Location = new System.Drawing.Point(356, 354);
+            this.sizeFeedbackLabel.Location = new System.Drawing.Point(356, 333);
             this.sizeFeedbackLabel.Name = "sizeFeedbackLabel";
             this.sizeFeedbackLabel.Size = new System.Drawing.Size(35, 13);
             this.sizeFeedbackLabel.TabIndex = 35;
@@ -251,7 +254,7 @@ namespace Ingatlan
             // 
             // valueField
             // 
-            this.valueField.Location = new System.Drawing.Point(359, 389);
+            this.valueField.Location = new System.Drawing.Point(359, 368);
             this.valueField.MaxLength = 18;
             this.valueField.Name = "valueField";
             this.valueField.Size = new System.Drawing.Size(100, 20);
@@ -260,7 +263,7 @@ namespace Ingatlan
             // valueLabel
             // 
             this.valueLabel.AutoSize = true;
-            this.valueLabel.Location = new System.Drawing.Point(356, 373);
+            this.valueLabel.Location = new System.Drawing.Point(356, 352);
             this.valueLabel.Name = "valueLabel";
             this.valueLabel.Size = new System.Drawing.Size(69, 13);
             this.valueLabel.TabIndex = 32;
@@ -268,7 +271,7 @@ namespace Ingatlan
             // 
             // sizeField
             // 
-            this.sizeField.Location = new System.Drawing.Point(359, 331);
+            this.sizeField.Location = new System.Drawing.Point(359, 310);
             this.sizeField.MaxLength = 18;
             this.sizeField.Name = "sizeField";
             this.sizeField.Size = new System.Drawing.Size(100, 20);
@@ -277,7 +280,7 @@ namespace Ingatlan
             // sizeLabel
             // 
             this.sizeLabel.AutoSize = true;
-            this.sizeLabel.Location = new System.Drawing.Point(356, 315);
+            this.sizeLabel.Location = new System.Drawing.Point(356, 294);
             this.sizeLabel.Name = "sizeLabel";
             this.sizeLabel.Size = new System.Drawing.Size(34, 13);
             this.sizeLabel.TabIndex = 30;
@@ -288,7 +291,7 @@ namespace Ingatlan
             this.cityField.Location = new System.Drawing.Point(360, 253);
             this.cityField.MaxLength = 255;
             this.cityField.Name = "cityField";
-            this.cityField.Size = new System.Drawing.Size(365, 20);
+            this.cityField.Size = new System.Drawing.Size(213, 20);
             this.cityField.TabIndex = 29;
             // 
             // cityLabel
@@ -299,23 +302,6 @@ namespace Ingatlan
             this.cityLabel.Size = new System.Drawing.Size(53, 13);
             this.cityLabel.TabIndex = 28;
             this.cityLabel.Text = "Település";
-            // 
-            // publicSpaceField
-            // 
-            this.publicSpaceField.Location = new System.Drawing.Point(359, 292);
-            this.publicSpaceField.MaxLength = 255;
-            this.publicSpaceField.Name = "publicSpaceField";
-            this.publicSpaceField.Size = new System.Drawing.Size(365, 20);
-            this.publicSpaceField.TabIndex = 27;
-            // 
-            // publicSpaceLabel
-            // 
-            this.publicSpaceLabel.AutoSize = true;
-            this.publicSpaceLabel.Location = new System.Drawing.Point(356, 276);
-            this.publicSpaceLabel.Name = "publicSpaceLabel";
-            this.publicSpaceLabel.Size = new System.Drawing.Size(54, 13);
-            this.publicSpaceLabel.TabIndex = 26;
-            this.publicSpaceLabel.Text = "Közterület";
             // 
             // zipCodeField
             // 
@@ -354,7 +340,7 @@ namespace Ingatlan
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(811, 115);
+            this.label5.Location = new System.Drawing.Point(613, 115);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(80, 13);
             this.label5.TabIndex = 37;
@@ -362,7 +348,7 @@ namespace Ingatlan
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(359, 452);
+            this.saveButton.Location = new System.Drawing.Point(359, 438);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(75, 23);
             this.saveButton.TabIndex = 38;
@@ -374,7 +360,7 @@ namespace Ingatlan
             // 
             this.successFeedbackLabel.AutoSize = true;
             this.successFeedbackLabel.ForeColor = System.Drawing.Color.Green;
-            this.successFeedbackLabel.Location = new System.Drawing.Point(356, 493);
+            this.successFeedbackLabel.Location = new System.Drawing.Point(356, 479);
             this.successFeedbackLabel.Name = "successFeedbackLabel";
             this.successFeedbackLabel.Size = new System.Drawing.Size(35, 13);
             this.successFeedbackLabel.TabIndex = 39;
@@ -384,6 +370,7 @@ namespace Ingatlan
             // 
             this.parcelNumberDisplayField.Enabled = false;
             this.parcelNumberDisplayField.Location = new System.Drawing.Point(359, 107);
+            this.parcelNumberDisplayField.MaxLength = 9;
             this.parcelNumberDisplayField.Name = "parcelNumberDisplayField";
             this.parcelNumberDisplayField.Size = new System.Drawing.Size(100, 20);
             this.parcelNumberDisplayField.TabIndex = 40;
@@ -399,7 +386,8 @@ namespace Ingatlan
             // 
             // ownerPercentageField
             // 
-            this.ownerPercentageField.Location = new System.Drawing.Point(814, 253);
+            this.ownerPercentageField.Location = new System.Drawing.Point(616, 253);
+            this.ownerPercentageField.MaxLength = 3;
             this.ownerPercentageField.Name = "ownerPercentageField";
             this.ownerPercentageField.Size = new System.Drawing.Size(100, 20);
             this.ownerPercentageField.TabIndex = 42;
@@ -407,7 +395,7 @@ namespace Ingatlan
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(811, 237);
+            this.label7.Location = new System.Drawing.Point(613, 237);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(135, 13);
             this.label7.TabIndex = 43;
@@ -415,7 +403,7 @@ namespace Ingatlan
             // 
             // setOwnerPercentageButton
             // 
-            this.setOwnerPercentageButton.Location = new System.Drawing.Point(919, 251);
+            this.setOwnerPercentageButton.Location = new System.Drawing.Point(721, 251);
             this.setOwnerPercentageButton.Name = "setOwnerPercentageButton";
             this.setOwnerPercentageButton.Size = new System.Drawing.Size(75, 23);
             this.setOwnerPercentageButton.TabIndex = 44;
@@ -426,7 +414,7 @@ namespace Ingatlan
             // percentageFeedbackLabel
             // 
             this.percentageFeedbackLabel.AutoSize = true;
-            this.percentageFeedbackLabel.Location = new System.Drawing.Point(811, 276);
+            this.percentageFeedbackLabel.Location = new System.Drawing.Point(613, 276);
             this.percentageFeedbackLabel.Name = "percentageFeedbackLabel";
             this.percentageFeedbackLabel.Size = new System.Drawing.Size(0, 13);
             this.percentageFeedbackLabel.TabIndex = 45;
@@ -434,7 +422,7 @@ namespace Ingatlan
             // deleteButton
             // 
             this.deleteButton.ForeColor = System.Drawing.Color.Red;
-            this.deleteButton.Location = new System.Drawing.Point(545, 452);
+            this.deleteButton.Location = new System.Drawing.Point(545, 438);
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(75, 23);
             this.deleteButton.TabIndex = 46;
@@ -442,11 +430,41 @@ namespace Ingatlan
             this.deleteButton.UseVisualStyleBackColor = true;
             this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
             // 
+            // citySearchField
+            // 
+            this.citySearchField.Location = new System.Drawing.Point(137, 252);
+            this.citySearchField.MaxLength = 255;
+            this.citySearchField.Name = "citySearchField";
+            this.citySearchField.Size = new System.Drawing.Size(97, 20);
+            this.citySearchField.TabIndex = 47;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(143, 237);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(86, 13);
+            this.label8.TabIndex = 48;
+            this.label8.Text = "Város megadása";
+            // 
+            // cityFeedbackLabel
+            // 
+            this.cityFeedbackLabel.AutoSize = true;
+            this.cityFeedbackLabel.ForeColor = System.Drawing.Color.Red;
+            this.cityFeedbackLabel.Location = new System.Drawing.Point(357, 276);
+            this.cityFeedbackLabel.Name = "cityFeedbackLabel";
+            this.cityFeedbackLabel.Size = new System.Drawing.Size(35, 13);
+            this.cityFeedbackLabel.TabIndex = 49;
+            this.cityFeedbackLabel.Text = "label4";
+            // 
             // UpdatePlotForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1261, 554);
+            this.Controls.Add(this.cityFeedbackLabel);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.citySearchField);
             this.Controls.Add(this.deleteButton);
             this.Controls.Add(this.percentageFeedbackLabel);
             this.Controls.Add(this.setOwnerPercentageButton);
@@ -466,8 +484,6 @@ namespace Ingatlan
             this.Controls.Add(this.sizeLabel);
             this.Controls.Add(this.cityField);
             this.Controls.Add(this.cityLabel);
-            this.Controls.Add(this.publicSpaceField);
-            this.Controls.Add(this.publicSpaceLabel);
             this.Controls.Add(this.zipCodeField);
             this.Controls.Add(this.zipCodeLabel);
             this.Controls.Add(this.typeLabel);
@@ -523,8 +539,6 @@ namespace Ingatlan
         private System.Windows.Forms.Label sizeLabel;
         private System.Windows.Forms.TextBox cityField;
         private System.Windows.Forms.Label cityLabel;
-        private System.Windows.Forms.TextBox publicSpaceField;
-        private System.Windows.Forms.Label publicSpaceLabel;
         private System.Windows.Forms.TextBox zipCodeField;
         private System.Windows.Forms.Label zipCodeLabel;
         private System.Windows.Forms.Label typeLabel;
@@ -539,5 +553,8 @@ namespace Ingatlan
         private System.Windows.Forms.Button setOwnerPercentageButton;
         private System.Windows.Forms.Label percentageFeedbackLabel;
         private System.Windows.Forms.Button deleteButton;
+        private System.Windows.Forms.TextBox citySearchField;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label cityFeedbackLabel;
     }
 }
