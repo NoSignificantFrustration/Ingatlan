@@ -36,7 +36,7 @@ namespace Ingatlan
 
         private void loginButton_Click(object sender, EventArgs e)
         {
-            if (usernameField.Text.Length < 10 || !int.TryParse(usernameField.Text, out int res))
+            if (usernameField.Text.Length < 10 || !long.TryParse(usernameField.Text, out long res))
             {
                 feedbackLabel.Text = "Érvénytelen adóazonosító jel";
                 feedbackLabel.ForeColor = Color.Red;
